@@ -10,12 +10,15 @@ import UIKit
 import SnapKit
 
 class InfoCard: UIView {
+    static let cardWidth = Int(UIScreen.main.bounds.width - 2 * 24 - 32)
+
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
 
     required convenience init(key: String, value: String, color: UIColor) {
         self.init(frame: CGRect.zero)
+
         let cornerRadiusValue:CGFloat = 8
         let boxContainer: UIView = UIView()
         boxContainer.layer.cornerRadius = cornerRadiusValue
@@ -48,7 +51,7 @@ class InfoCard: UIView {
         }
         
         boxContainer.snp.makeConstraints { make in
-            make.width.equalTo(280)
+            make.width.equalTo(InfoCard.cardWidth)
             make.height.equalTo(160)
         }
     

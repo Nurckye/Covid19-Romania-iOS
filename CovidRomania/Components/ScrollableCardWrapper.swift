@@ -18,7 +18,6 @@ class ScrollableCardWrapper: UIView {
     required convenience init(county: CountyData) {
         self.init(frame: CGRect.zero)
         
-        let cardWidth = 280
         let cardHeight = 40
         
         let scrollView: UIScrollView = {
@@ -43,28 +42,42 @@ class ScrollableCardWrapper: UIView {
             if prevKpi == nil {
                 kpi.snp.makeConstraints { make in
                     make.height.equalTo(cardHeight)
-                    make.width.equalTo(cardWidth)
-                    make.left.equalTo(scrollView).offset((Int(UIScreen.main.bounds.width) - cardWidth) / 2)
+                    make.width.equalTo(InfoCard.cardWidth)
+                    make.left.equalTo(scrollView).offset(24)
                 }
 
             } else {
                 kpi.snp.makeConstraints { make in
                     make.height.equalTo(cardHeight)
-                    make.width.equalTo(cardWidth)
-                    make.left.equalTo(prevKpi!.snp.right).offset(Int(UIScreen.main.bounds.width) - cardWidth)
+                    make.width.equalTo(InfoCard.cardWidth)
+                    make.left.equalTo(prevKpi!.snp.right).offset(24)
                 }
             }
             totalScrollElements += 1
             prevKpi = kpi
         }
         
-        
         scrollView.snp.makeConstraints { make in
             make.width.equalTo(UIScreen.main.bounds.width)
             make.height.equalTo(300)
         }
+
+        scrollView.contentSize = CGSize(width: 3 * (InfoCard.cardWidth + 24) + 24, height: 120)
         
-        scrollView.contentSize = CGSize(width: 3 * Int(UIScreen.main.bounds.width), height: 120)
+        let dragBar:UIView = {
+                   let vw = UIView()
+                   vw.backgroundColor = UIColor(red: 0.442, green: 0.418, blue: 0.396, alpha: 0.47)
+                   vw.layer.cornerRadius = 6
+                   return vw
+        }()
+        self.addSubview(dragBar)
+        dragBar.snp.makeConstraints { make in
+            make.bottom.equalTo(scrollView.snp.top).offset(-14)
+            make.centerX.equalTo(self.snp.left).offset(UIScreen.main.bounds.width / 2)
+            make.width.equalTo(72)
+            make.height.equalTo(10)
+        }
+        
     }
 
     required init(coder aDecoder: NSCoder) {

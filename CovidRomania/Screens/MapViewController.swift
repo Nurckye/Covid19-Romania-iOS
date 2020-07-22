@@ -16,7 +16,8 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     var infoBoxes: ScrollableCardWrapper?
     var panGesture = UIPanGestureRecognizer()
     var originalCenter: CGPoint?
-
+    var gesture: UIGestureRecognizer?
+    
     @objc func statsPressed() {
         let generator = UIImpactFeedbackGenerator(style: .light)
         generator.impactOccurred()
@@ -35,11 +36,14 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         guard let iboxes = self.infoBoxes, let originalCenter = self.originalCenter else {
             return
         }
+        iboxes.removeGestureRecognizer(self.gesture!)
         
-        UIView.animate(withDuration: 10) {
-            iboxes.transform = CGAffineTransform(translationX: 0, y: 160)
+        UIView.animate(withDuration: 0.3, animations: {
+            self.infoBoxes!.center.y = 700
+        }) { _ in
+            self.infoBoxes?.removeFromSuperview()
         }
-        self.infoBoxes?.removeFromSuperview()
+        
     }
     
     func bringBackUp() {
@@ -52,18 +56,23 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         }
         
         let translation = sender.translation(in: self.view)
-        print(iboxes.center.y + translation.y, originalCenter.y)
+//        print(iboxes.center.y + translation.y, originalCenter.y)
         if iboxes.center.y + translation.y > 495 {
             infoBoxes!.center = CGPoint(x: iboxes.center.x, y: iboxes.center.y + translation.y)
             sender.setTranslation(CGPoint.zero, in: self.view)
             if iboxes.center.y + translation.y > 580 {
-                self.animateInfoOut()
+                iboxes.isUserInteractionEnabled = false
+                if self.gesture != nil  {
+                    self.animateInfoOut()
+                }
             }
         }
     }
     
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.impactOccurred()
         if self.infoBoxes != nil {
             self.infoBoxes?.removeFromSuperview()
         }
@@ -73,11 +82,17 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             self.infoBoxes!.snp.makeConstraints { make in
                 make.bottom.equalTo(self.view.snp.bottom).offset(-60)
                 make.height.equalTo(120)
-                make.width.equalTo(600)
+                make.width.equalTo(UIScreen.main.bounds.width)
                 make.left.equalTo(self.view)
+            }
+            
+            self.infoBoxes!.center.y = 700
+            UIView.animate(withDuration: 0.6) {
+                self.infoBoxes!.center.y = 300
             }
 
             panGesture = UIPanGestureRecognizer(target: self, action: #selector(draggedView))
+            self.gesture = panGesture
             self.infoBoxes!.isUserInteractionEnabled = true
             self.infoBoxes!.addGestureRecognizer(panGesture)
             self.originalCenter = self.infoBoxes!.center

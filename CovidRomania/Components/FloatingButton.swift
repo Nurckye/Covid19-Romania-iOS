@@ -22,7 +22,7 @@ class FloatingButton: UIButton {
         self.layer.shadowOpacity = 0.25
         self.layer.shadowOffset = .zero
         self.layer.shadowRadius = 4
-        self.contentEdgeInsets = UIEdgeInsets(top: 10,left: 10,bottom: 10,right: 10)
+        self.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         if let image = UIImage(named: img) {
             self.setImage(image, for: .normal)
         }

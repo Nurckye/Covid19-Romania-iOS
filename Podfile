@@ -6,4 +6,5 @@ target 'CovidRomania' do
   use_frameworks!
   # Pods for CovidRomania
   pod 'SnapKit', '~> 5.0.0'
+  pod 'Charts'
 end
