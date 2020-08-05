@@ -44,7 +44,7 @@ class InitialScreenViewController: UIViewController {
     
         self.fetchData(completionHandler: { [weak self] (data) in
             MapUtils.APIData = data.data
-//            sleep(1121)
+            MapUtils.APIData?.orderByTotalCases()
             DispatchQueue.main.async {
                 self?.navigationController?.setViewControllers([MapViewController()], animated: true)
             }

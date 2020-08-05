@@ -57,8 +57,6 @@ class MapUtils {
     
     static var countiesInfo: [String: CountyData] = [:]
     
-    
-    
     static var APIData: InformationWrapper? = nil
 
     static func generateCountiesCoordinates() -> [MKPointAnnotation] {

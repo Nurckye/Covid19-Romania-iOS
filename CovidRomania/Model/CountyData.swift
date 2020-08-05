@@ -1,11 +1,3 @@
-//
-//  CityData.swift
-//  CovidRomania
-//
-//  Created by Radu Nitescu  on 19/07/2020.
-//  Copyright © 2020 Radu Nitescu . All rights reserved.
-//
-
 import Foundation
 import MapKit
 
@@ -32,6 +24,10 @@ struct CountyData: Decodable {
 struct InformationWrapper: Decodable {
     var total: Int
     var data: [CountyData]
+    
+    mutating func orderByTotalCases() -> Void {
+        self.data = self.data.sorted { $0.totalCounty > $1.totalCounty }
+    }
 }
 
 struct CovidAPIResult: Decodable {
